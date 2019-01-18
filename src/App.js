@@ -113,8 +113,15 @@ const elements = [
     ]
   },
   {
-    title: 'Definições',
-    children: []
+    title: 'Items',
+    children: [],
+    items: [
+      { title: 'item1', children: [] },
+      { title: 'item2', children: [] },
+      { title: 'item3', children: [] },
+      { title: 'item4', children: [] },
+      { title: 'item5', children: [] }
+    ]
   },
   {
     title: 'Projetos',
@@ -140,9 +147,13 @@ class App extends Component {
     return (
       <div className="App">
         <BrowseTree
-          selectedElements={[ 0, 19, 0 ]}
+          selectedElements={[0,0,0,0,0,0,1,0,0,0,0,1]}
           elements={elements}
-          maxColumns={10} />
+          orientation={'landscape'}
+          itemMinWidth={200}
+          itemMaxWidth={600}
+          maxColumns={1}
+          dev={true} />
       </div>
     )
   }

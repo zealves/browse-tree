@@ -1,13 +1,17 @@
+.rootBrowseTree {
+    padding: 30px;
+}
+
 .browseTree,
 .browseSubTree {
+    position: relative;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
-}
-
-.browseTree {
-    background: #efefef;
+    flex-flow: row;
+    overflow: auto;
+    padding: 10px 0 20px 0;
 }
 
 .browseSubTree .column {
@@ -16,10 +20,15 @@
     flex: 1;
     overflow: hidden;
     min-width: 115px;
+    max-width: 600px;
+    margin: 2px;
+    -webkit-box-shadow: 0 8px 6px -6px #d8d8d8;
+	   -moz-box-shadow: 0 8px 6px -6px #d8d8d8;
+	        box-shadow: 0 8px 6px -6px #d8d8d8;
 }
 
 .browseTree .column h1 {
-    height: 28px;
+    height: 40px;
     padding-left: 10px;
     padding-right: 5px;
     font-size: 14px;
@@ -27,6 +36,7 @@
     align-items: center;
     color: black;
     justify-content: space-between;
+    cursor: default;
 }
 
 .columnHidden {
@@ -38,7 +48,6 @@
 .browseTree h1.selected.haveChildren {
     background-color: #d8d8d8;
     border-radius: 10px;
-    cursor: pointer;
     color: black;
 }
 
@@ -46,7 +55,6 @@
 .browseTree h1:hover {
     background-color: #4285f4;
     border-radius: 10px;
-    cursor: pointer;
     color: white;
 }
 
@@ -63,6 +71,8 @@ h1 .folder {
 
 .backBtnContent {
     margin: auto;
+    margin-right: 7px;
+    margin-left: 7px;
 }
 
 .backBtn {
@@ -72,11 +82,38 @@ h1 .folder {
 }
 
 .backBtn:hover {
-    background-color: black;
+    background-color: #d2d2d2;
+    border-radius: 50%;
 }
 
 .textContent {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.animated {
+    background-color: #f3f3f3;
+    background-repeat: no-repeat;
+    background-position: left top;
+    padding-top:10px;
+    -webkit-animation-duration: 2s;
+    animation-duration: 2s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+@-webkit-keyframes fadeIn {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
+@keyframes fadeIn {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
+.fadeIn {
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn;
 }
