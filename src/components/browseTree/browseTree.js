@@ -30,44 +30,74 @@ class BrowseTree extends Component {
         this.generateTree()
     }
     
+
+
+
+
+
+
     generateTree = () => {
         const { elements, selectedElements } = this.state
         let showBackBtn = false
+        let selectedElements_ = selectedElements
         let childrenElements = []
         childrenElements.push(this.props.elements)
         
-        if (elements.length > 0 && selectedElements.length > 0) {
-            let currentChildren = null
-            for (let i = 0; i <= selectedElements.length; i++) {
+        
+        if (elements.length > 0 && selectedElements_.length > 0) {
+            let currentChildren = []
+            for (let i = 0; i < selectedElements_.length; i++) {
+                const ind = selectedElements_[i]
                 if (i === 0) {
-                    const ind = selectedElements[i]
-                    childrenElements.push(elements[ind].children)
-                    currentChildren = elements[ind].children
-                    
+                    if (elements[ind] && elements[ind].children && elements[ind].children.length > 0) {
+                        childrenElements.push(elements[ind].children)
+                        currentChildren = elements[ind].children
+                        console.log(currentChildren, i, ind, elements[ind])
+                    }
+                    else {
+                        console.log(ind, elements[ind])
+                        selectedElements_ = selectedElements_.filter((v, k) => {
+                            return (k === 0)
+                        })
+                        break
+                    }
                 }
-                else {
-                    const ind = selectedElements[i]
-                    console.log(childrenElements, currentChildren,ind, selectedElements)
-                    if (selectedElements[i] && currentChildren[ind] && currentChildren[ind].children ) {
+                else {  
+                   // currentChildren = currentChildren[ind].children
+                    console.log(currentChildren)
+                    if (currentChildren[ind] && currentChildren[ind].children.length > 0) {
                         currentChildren = currentChildren[ind].children
                         childrenElements.push(currentChildren)
                     }
-                    
+                    else {
+                        selectedElements_ = selectedElements_.filter((v, k) => {
+                            return (k < i)
+                        })
+                        break
+                    }
                 }
             }
         }
 
-console.log(childrenElements)
+        console.log(selectedElements,selectedElements_, childrenElements)
+
+
+
+
+
+
+
         let maxColumns = (parseInt(this.props.maxColumns) >= 0) ? parseInt(this.props.maxColumns) : -1
 
-        if (maxColumns > 0 && selectedElements.length > maxColumns) {
-            showBackBtn = true
+        if (maxColumns > 0 && selectedElements_.length >= maxColumns) {
+            
             
             if (childrenElements.length >= parseInt(maxColumns)) {
                 const limit = childrenElements.length - parseInt(maxColumns)
                 for (let i = 0; i < childrenElements.length; i++) {
                     if (i < limit) {
                         childrenElements[i].hidden = true
+                        showBackBtn = true
                     }
                     else {
                         childrenElements[i].hidden = false
@@ -76,7 +106,7 @@ console.log(childrenElements)
             }
         }
 
-        this.setState({ elements: this.props.elements, childrenElements, maxColumns, showBackBtn })
+        this.setState({ selectedElements: selectedElements_,elements: this.props.elements, childrenElements, maxColumns, showBackBtn })
 
     }
     
@@ -106,12 +136,16 @@ console.log(childrenElements)
             selectedElements.push(index)
         }
 
-        if (parseInt(this.state.maxColumns) > 0 && childrenElements.length > parseInt(this.state.maxColumns)) {
+       if (columnPosition === 0 && children.length <= 0) {
+
+       }
+       else if (parseInt(this.state.maxColumns) > 0 && childrenElements.length >= parseInt(this.state.maxColumns)) {
             const limit = childrenElements.length - parseInt(this.state.maxColumns)
-            showBackBtn = true
+            
 
             for (let i = 0; i < limit; i++) {
                 childrenElements[i].hidden = true
+                showBackBtn = true
             }
         }
 
@@ -125,13 +159,14 @@ console.log(childrenElements)
         selectedElements.pop()
         childrenElements.pop()
 
-        if (childrenElements.length > parseInt(this.state.maxColumns)) showBackBtn = true
+       // if (childrenElements.length > parseInt(this.state.maxColumns)) 
         
         if (childrenElements.length >= parseInt(this.state.maxColumns)) {
             const limit = childrenElements.length - parseInt(this.state.maxColumns)
             for (let i = 0; i < childrenElements.length; i++) {
                 if (i < limit) {
                     childrenElements[i].hidden = true
+                    showBackBtn = true
                 }
                 else {
                     childrenElements[i].hidden = false
@@ -143,6 +178,7 @@ console.log(childrenElements)
 
     render() {
         const { childrenElements, selectedElements } = this.state
+        console.log(selectedElements,childrenElements)
         return (
             <div className={'browseTree'}> 
                 <div className='browseSubTree'>

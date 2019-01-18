@@ -88,9 +88,9 @@ class App extends Component {
     return (
       <div className="App">
         <BrowseTree
-          selectedElements={[ 0, 0, 0, 0 ]}
+          selectedElements={[ 0,0,0,0,0,0, 0, 0]}
           elements={elements}
-          maxColumns={9999} />
+          maxColumns={1} />
       </div>
     )
   }
