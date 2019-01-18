@@ -3,35 +3,62 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-   /* width: 100%; */
+    width: 100%;
 }
 
 .browseTree {
-    background: white;
-    border: 1px solid grey;
+    background: #efefef;
 }
 
 .browseSubTree .column {
-    border: 1px solid grey;
+    border: 1px solid #dadada;
     padding: 15px;
-    margin: 5px;
     flex: 1;
+    overflow: hidden;
+    min-width: 115px;
+}
+
+.browseTree .column h1 {
+    height: 28px;
+    padding-left: 10px;
+    padding-right: 5px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    color: black;
+    justify-content: space-between;
 }
 
 .columnHidden {
     background: grey;
     display: none;
 }
-.browseTree h1:hover,
-.browseTree h1.selected {
-    background-color: #cccccc;
+
+.browseTree h1.haveChildren:hover,
+.browseTree h1.selected.haveChildren {
+    background-color: #d8d8d8;
     border-radius: 10px;
     cursor: pointer;
+    color: black;
+}
+
+.browseTree h1.selected,
+.browseTree h1:hover {
+    background-color: #4285f4;
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
 }
 
 h1 .arrow {
-    width: 25px;
-    height: 25px;
+    width: 18px;
+    height: 18px;
+}
+
+h1 .folder {
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
 }
 
 .backBtnContent {
@@ -46,4 +73,10 @@ h1 .arrow {
 
 .backBtn:hover {
     background-color: black;
+}
+
+.textContent {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

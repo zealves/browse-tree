@@ -2,13 +2,21 @@ import React, { Component } from 'react'
 import './browseTree.css'
 import arrowRight from '../../assets/img/arrow-right.png'
 import arrowLeft from '../../assets/img/arrow-left.png'
+import folder from '../../assets/img/folder.png'
 
 const Item = ({ data, index, renderChildren, columnPosition, selected }) => {
     const { title, children } = data
+    let classNames = selected === index && 'selected '
+    classNames += children.length > 0 && ' haveChildren'
     return (
-        <h1 data-pos={index} onClick={() => renderChildren(index, children, columnPosition)} className={selected === index ? 'selected' : ''}>
-            <span>{title}</span>
-            {children.length > 0 && <img className={'arrow'} alt={'.'} src={arrowRight} />}
+        <h1 data-pos={index} onClick={() => renderChildren(index, children, columnPosition)} className={classNames}>
+            <span className='textContent'>
+                {children.length > 0 && <img className={'folder'} alt={'#'} src={folder} />}
+                {title}
+            </span>
+            {children.length > 0 &&
+                <img className={'arrow'} alt={'>'} src={arrowRight}
+            />}
         </h1>
     )
 }
@@ -24,26 +32,18 @@ class BrowseTree extends Component {
             maxColumns: null,
             showBackBtn: false
         }
+        this.defaultColumns = 7
     }
 
-    componentDidMount = () => {
-        this.generateTree()
-    }
+    componentDidMount = () => this.generateTree()
     
-
-
-
-
-
-
     generateTree = () => {
         const { elements, selectedElements } = this.state
         let showBackBtn = false
         let selectedElements_ = selectedElements
         let childrenElements = []
         childrenElements.push(this.props.elements)
-        
-        
+            
         if (elements.length > 0 && selectedElements_.length > 0) {
             let currentChildren = []
             for (let i = 0; i < selectedElements_.length; i++) {
@@ -52,42 +52,31 @@ class BrowseTree extends Component {
                     if (elements[ind] && elements[ind].children && elements[ind].children.length > 0) {
                         childrenElements.push(elements[ind].children)
                         currentChildren = elements[ind].children
-                        console.log(currentChildren, i, ind, elements[ind])
                     }
                     else {
-                        console.log(ind, elements[ind])
-                        selectedElements_ = selectedElements_.filter((v, k) => {
-                            return (k === 0)
-                        })
+                        selectedElements_ = selectedElements_.filter((v, k) => (k === 0))
                         break
                     }
                 }
-                else {  
-                   // currentChildren = currentChildren[ind].children
-                    console.log(currentChildren)
+                else {
                     if (currentChildren[ind] && currentChildren[ind].children.length > 0) {
                         currentChildren = currentChildren[ind].children
                         childrenElements.push(currentChildren)
                     }
                     else {
-                        selectedElements_ = selectedElements_.filter((v, k) => {
-                            return (k < i)
-                        })
+                        if (currentChildren[ind] && currentChildren[ind].children) {
+                            selectedElements_ = selectedElements_.filter((v, k) => (k <= i))
+                        }
+                        else {
+                            selectedElements_ = selectedElements_.filter((v, k) => (k < i))
+                        }
                         break
                     }
                 }
             }
         }
 
-        console.log(selectedElements,selectedElements_, childrenElements)
-
-
-
-
-
-
-
-        let maxColumns = (parseInt(this.props.maxColumns) >= 0) ? parseInt(this.props.maxColumns) : -1
+        let maxColumns = (parseInt(this.props.maxColumns) >= 0) ? parseInt(this.props.maxColumns) : this.defaultColumns
 
         if (maxColumns > 0 && selectedElements_.length >= maxColumns) {
             
@@ -122,17 +111,11 @@ class BrowseTree extends Component {
             selectedElements.push(index)
         }
         else {
-            childrenElements = childrenElements.filter((v, i) => {
-                return (i < columnPosition + 1)
-            })
+            childrenElements = childrenElements.filter((v, i) => (i < columnPosition + 1))
             
-           if (children.length > 0) {
-            childrenElements.push(children)
-           }
+           if (children.length > 0) childrenElements.push(children)
             
-            selectedElements = selectedElements.filter((v, i) => {
-                return (i < columnPosition)
-            })
+            selectedElements = selectedElements.filter((v, i) => (i < columnPosition))
             selectedElements.push(index)
         }
 
@@ -158,9 +141,6 @@ class BrowseTree extends Component {
         
         selectedElements.pop()
         childrenElements.pop()
-
-       // if (childrenElements.length > parseInt(this.state.maxColumns)) 
-        
         if (childrenElements.length >= parseInt(this.state.maxColumns)) {
             const limit = childrenElements.length - parseInt(this.state.maxColumns)
             for (let i = 0; i < childrenElements.length; i++) {
@@ -178,22 +158,26 @@ class BrowseTree extends Component {
 
     render() {
         const { childrenElements, selectedElements } = this.state
-        console.log(selectedElements,childrenElements)
+
         return (
-            <div className={'browseTree'}> 
-                <div className='browseSubTree'>
-                    {this.state.showBackBtn && (
-                        <div className={'backBtnContent'}>
-                            <img className={'backBtn'} onClick={this.back} src={arrowLeft} alt='Back' />
-                        </div>
-                    )}
-                    {childrenElements.map((item, pos) => (
-                        <div className={item.hidden ? 'columnHidden' : (item.length > 0 ? 'column' : '')} key={pos}>
-                            {item.map((e,i) =>
-                                <Item selected={selectedElements[pos]} columnPosition={pos} data={e} key={i} index={i} renderChildren={this.renderChildren} />
-                            )}
-                        </div>
-                    ))}
+            <div>
+                <h1>Max Columns: {this.state.maxColumns}</h1>
+                <h1>Path: {this.state.selectedElements.map(e => e)}</h1>
+                <div className={'browseTree'}> 
+                    <div className='browseSubTree'>
+                        {this.state.showBackBtn && (
+                            <div className={'backBtnContent'}>
+                                <img className={'backBtn'} onClick={this.back} src={arrowLeft} alt='Back' />
+                            </div>
+                        )}
+                        {childrenElements.map((item, pos) => (
+                            <div className={item.hidden ? 'columnHidden' : (item.length > 0 ? 'column' : '')} key={pos}>
+                                {item.map((e,i) =>
+                                    <Item selected={selectedElements[pos]} columnPosition={pos} data={e} key={i} index={i} renderChildren={this.renderChildren} />
+                                )}
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         )
