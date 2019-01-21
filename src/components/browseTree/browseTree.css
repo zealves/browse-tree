@@ -129,3 +129,8 @@ h1 .folder {
     -webkit-animation-name: fadeIn;
     animation-name: fadeIn;
 }
+
+
+.item1 {
+   width: 100%;
+}
