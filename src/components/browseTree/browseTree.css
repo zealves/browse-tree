@@ -39,6 +39,17 @@
     cursor: default;
 }
 
+.browseTree .column h1 span {
+    width: 100%;
+    text-align: left;
+}
+
+.browseTree .column h1 input {
+    border: none;
+    outline: none;
+    background: unset;
+}
+
 .columnHidden {
     background: grey;
     display: none;
@@ -61,6 +72,7 @@
 h1 .arrow {
     width: 18px;
     height: 18px;
+    cursor: pointer;
 }
 
 h1 .folder {

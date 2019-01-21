@@ -4,26 +4,19 @@ import arrowRight from '../../assets/img/arrow-right.png'
 import arrowLeft from '../../assets/img/arrow-left.png'
 import folder from '../../assets/img/folder.png'
 import folderClose from '../../assets/img/folderClose.png'
-import Box from 'react-inln'
 
-/*
-    TODO
-    1) Add items
-    2) Add preview view
-*/
-
-const Item = ({ data, index, renderChildren, columnPosition, selected }) => {
-    const { title, children, items } = data
+const Item = ({ data, index, renderChildren, columnPosition, selected, updateItem }) => {
+    const { title, children, value } = data
     let classNames = selected === index && 'selected '
     if (children)  classNames += children.length > 0 && ' haveChildren'
 
     return (
-        <h1 data-pos={index} onDoubleClick={() => (items ? renderChildren(index, items, columnPosition) : renderChildren(index, children, columnPosition))} className={classNames}>
+        <h1 data-pos={index} onClick={() => (value ? renderChildren(index, children, columnPosition, value) : renderChildren(index, children, columnPosition))} className={classNames}>
             <span className='textContent'>
                 {children.length > 0 ? 
                     (selected === index ? <img className={'folder'} alt={'#'} src={folder} /> : <img className={'folder'} alt={'#'} src={folderClose} />)
                     : '' }
-                {title}
+                <input type='text' value={title} onChange={(e) => updateItem(e.target.value, columnPosition, index)} />
             </span>
             {children.length > 0 &&
                 <img className={'arrow'} alt={'>'} src={arrowRight}
@@ -42,9 +35,12 @@ class BrowseTree extends Component {
             selectedElements: this.props.selectedElements || [],
             maxColumns: null,
             showBackBtn: false,
-            path: []
+            path: [],
+            currentValue: {}
         }
         this.defaultColumns = 7
+
+        this.layoutOrientation = { display: this.props.orientation === 'portrait' ? 'block' : 'flex' }
         this.columnStyle = {
             minWidth: this.props.itemMinWidth || 115,
             maxWidth: this.props.itemMaxWidth || 600
@@ -110,11 +106,17 @@ class BrowseTree extends Component {
             }
         }
 
-        this.setState({ path: path_, selectedElements: selectedElements_,elements: this.props.elements, childrenElements, maxColumns, showBackBtn })
+        let currentValue = {}
+        if (childrenElements[childrenElements.length - 1]) {   
+            const ind = selectedElements_[childrenElements.length - 1]
+            const elem = childrenElements[childrenElements.length - 1][ind]   
+            if (elem.value) currentValue = elem.value
+        }
+        this.setState({ currentValue, path: path_, selectedElements: selectedElements_,elements: this.props.elements, childrenElements, maxColumns, showBackBtn })
 
     }
     
-    renderChildren = (index, children, columnPosition) => {
+    renderChildren = (index, children, columnPosition, value) => {
         let { childrenElements, selectedElements  } = this.state
         let showBackBtn = false
 
@@ -134,10 +136,7 @@ class BrowseTree extends Component {
             selectedElements.push(index)
         }
 
-       if (columnPosition === 0 && children.length <= 0) {
-
-       }
-       else if (parseInt(this.state.maxColumns) > 0 && childrenElements.length >= parseInt(this.state.maxColumns)) {
+        if (columnPosition > 0 && parseInt(this.state.maxColumns) > 0 && childrenElements.length >= parseInt(this.state.maxColumns)) {
             const limit = childrenElements.length - parseInt(this.state.maxColumns)
             
             for (let i = 0; i < limit; i++) {
@@ -149,7 +148,12 @@ class BrowseTree extends Component {
         childrenElements.forEach(e => {
             if (e.hidden) showBackBtn = true
         })
-        this.setState({ showBackBtn, childrenElements, columnPosition, selectedElements })
+
+
+        let currentValue = {}
+        if (value) currentValue = value
+        
+        this.setState({ currentValue, showBackBtn, childrenElements, columnPosition, selectedElements })
     }
 
     back = () => {
@@ -172,8 +176,28 @@ class BrowseTree extends Component {
         this.setState({ showBackBtn, selectedElements, childrenElements })
     }
 
+    updateElements = (value, pos, index) => {
+        let elements = this.state.elements
+        let childrenElements = this.state.childrenElements
+       // elements[0].title = 'asdasdasdasd'
+
+        let currentChildren = {}
+
+        this.state.selectedElements.forEach((e, i) => {
+            if (pos === i && this.state.childrenElements[i]) {
+                currentChildren = this.state.childrenElements[i]
+                childrenElements[i][index].title = value
+            }
+        });
+
+
+        console.log(pos, currentChildren)
+        console.log(elements, this.state.childrenElements)
+        this.setState({ elements, childrenElements })
+    }
+
     render() {
-        const { childrenElements, selectedElements, path } = this.state
+        const { childrenElements, selectedElements, path, currentValue } = this.state
         return (
             <div className='rootBrowseTree'>
                 {this.props.dev && (
@@ -184,12 +208,17 @@ class BrowseTree extends Component {
                     <h1>Path: {path.map((e, pos) => (
                         path[pos + 1] ? e + ' | ' : e
                     ))}</h1>
+                    <h1>
+                        Current State Value:
+                        {JSON.stringify(currentValue)}
+                    </h1>
+                    <button onClick={this.updateElements}>test</button>
                     <br></br>
                     <br></br>
                 </div>
                 )}
                 <section className='browseTree animated fadeIn'> 
-                    <Box tag='div' className='browseSubTree' display={this.props.orientation === 'portrait' ? 'block' : 'flex'}>
+                    <div className='browseSubTree' style={this.layoutOrientation}>
                         {this.state.showBackBtn && (
                             <div className={'backBtnContent'}>
                                 <img className={'backBtn'} onClick={this.back} src={arrowLeft} alt='Back' />
@@ -198,11 +227,11 @@ class BrowseTree extends Component {
                         {childrenElements.map((item, pos) => (
                             <div style={this.columnStyle} className={item.hidden ? 'columnHidden' : (item.length > 0 ? 'column' : '')} key={pos}>
                                 {item.map((e,i) =>
-                                    <Item selected={selectedElements[pos]} columnPosition={pos} data={e} key={i} index={i} renderChildren={this.renderChildren} />
+                                    <Item updateItem={this.updateElements} selected={selectedElements[pos]} columnPosition={pos} data={e} key={i} index={i} renderChildren={this.renderChildren} />
                                 )}
                             </div>
                         ))}
-                    </Box>
+                    </div>
                 </section>
             </div>
         )

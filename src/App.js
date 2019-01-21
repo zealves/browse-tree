@@ -6,6 +6,7 @@ import BrowseTree from './components/browseTree'
 const elements = [
   {
     title: 'Opções',
+    value: { id: 122, data: 'Opções' },
     children: [
       {
         title: 'Opções1',
@@ -18,6 +19,7 @@ const elements = [
                 children: [
                   {
                     title: 'CPRR',
+                    value: { id: 11, data: { test: 'CPRR', array: [1,2,3,4,5,6] } },
                     children: [
                       {
                         title: 'CPRR11111',
@@ -40,11 +42,13 @@ const elements = [
                                         children: [
                                           {
                                             title: '4444',
-                                            children: []
+                                            children: [],
+                                            value: { id: 4444, data: {test: 123, array: []}}
                                           },
                                           {
                                             title: '1111',
-                                            children: []
+                                            children: [],
+                                            value: { id: 1111, data: { test: 1, array: [] } }
                                           }
                                         ]
                                       },
@@ -114,18 +118,12 @@ const elements = [
   },
   {
     title: 'Items',
-    children: [],
-    items: [
-      { title: 'item1', children: [] },
-      { title: 'item2', children: [] },
-      { title: 'item3', children: [] },
-      { title: 'item4', children: [] },
-      { title: 'item5', children: [] }
-    ]
+    children: []
   },
   {
     title: 'Projetos',
-    children: []
+    children: [],
+    value: { id: 12, data: 'Projetos' }
   },
   {
     title: 'Imagens',
@@ -142,17 +140,28 @@ const elements = [
   }
 ]
 
+/*
+  PROPS:
+  selectedElements={[0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]}  =>  OPTIONAL  path of selected elements by position
+  elements={elements}  => REQUIRED  all data in specific format
+  orientation={'landscape'} => OPTIONAL 'landscape' or 'portrait', by default landscape
+          itemMinWidth={200} => OPTIONAL by default 115
+          itemMaxWidth={600} => OPTIONAL by default 600
+          maxColumns={4} => OPTIONAL by default false
+          dev={true} => REMOVE
+*/
+
 class App extends Component {
   render() {
     return (
       <div className="App">
         <BrowseTree
-          selectedElements={[0,0,0,0,0,0,1,0,0,0,0,1]}
+          selectedElements={[0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]}
           elements={elements}
           orientation={'landscape'}
           itemMinWidth={200}
           itemMaxWidth={600}
-          maxColumns={1}
+          maxColumns={4}
           dev={true} />
       </div>
     )
