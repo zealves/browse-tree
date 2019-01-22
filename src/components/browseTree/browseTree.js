@@ -4,23 +4,34 @@ import arrowRight from '../../assets/img/arrow-right.png'
 import arrowLeft from '../../assets/img/arrow-left.png'
 import folder from '../../assets/img/folder.png'
 import folderClose from '../../assets/img/folderClose.png'
+import dot from '../../assets/img/dot.png'
 
-const Item = ({ data, index, renderChildren, columnPosition, selected }) => {
+const Item = ({ data, index, renderChildren, columnPosition, selected, updateItem }) => {
     const { title, children, value } = data
     let classNames = selected === index && 'selected '
     if (children)  classNames += children.length > 0 && ' haveChildren'
 
     return (
-        <h1 data-pos={index} onClick={() => (value ? renderChildren(index, columnPosition, value) : renderChildren(index, columnPosition))} className={classNames}>
+        <h1 data-pos={index}  className={classNames}>
             <span className='textContent'>
                 {children.length > 0 ? 
                     (selected === index ? <img className={'folder'} alt={'#'} src={folder} /> : <img className={'folder'} alt={'#'} src={folderClose} />)
                     : '' }
-                {title}
+                <input  
+                    readOnly
+                    onDoubleClick={(e) => e.target.readOnly = false}
+                    className={'editItem'}
+                    type='text'
+                    value={title}
+                    onChange={(e) => updateItem(e.target, columnPosition, index)} />
             </span>
-            {children.length > 0 &&
-                <img className={'arrow'} alt={'>'} src={arrowRight}
-            />}
+            <div className={'renderChildren'} onClick={() => (value ? renderChildren(index, columnPosition, value) : renderChildren(index, columnPosition))}>
+                {children.length > 0 ?
+                    <img className={'arrow'} alt={'>'} src={arrowRight}
+                /> :
+                    <img className={'arrow'} alt={'.'} src={dot} />
+                }
+            </div>
         </h1>
     )
 }
@@ -38,7 +49,6 @@ class BrowseTree extends Component {
             currentValue: {}
         }
         this.defaultColumns = 7
-
         this.layoutOrientation = { display: this.props.orientation === 'portrait' ? 'block' : 'flex' }
         this.columnStyle = {
             minWidth: this.props.itemMinWidth || 115,
@@ -55,7 +65,6 @@ class BrowseTree extends Component {
 
         childrenElements = elements
         childrenElements = this.hideElements(1, childrenElements, maxColumns)
-
         childrenElements.forEach(e => {
             if (e.hidden) showBackBtn = true
         })
@@ -153,6 +162,34 @@ class BrowseTree extends Component {
         this.setState({ showBackBtn, selectedElements, childrenElements })
     }
 
+    updateItem = (target, columnPosition, index) => {
+        let childrenElements = this.state.childrenElements
+        let elements_ = this.state.elements
+        let currentPath = {}
+        
+        this.state.selectedElements.forEach((v, k) => {
+            if (k === 0 && elements_[v]) {
+                currentPath = elements_[v]
+            }
+            else if (k <= columnPosition) {
+                if (columnPosition === k) {
+                    currentPath = currentPath.children[index]
+                    currentPath.title = target.value
+                    return
+                }
+                else {
+                    currentPath = currentPath.children[v]
+                }
+            }
+        })
+
+        if (childrenElements[columnPosition] && childrenElements[columnPosition][index]) {
+            childrenElements[columnPosition][index].title = target.value
+        }
+        //target.readOnly = true
+        this.setState({ childrenElements, elements: elements_ })
+    }
+
     render() {
         const { childrenElements, selectedElements, currentValue } = this.state
         return (
@@ -180,7 +217,7 @@ class BrowseTree extends Component {
                         {childrenElements.map((item, pos) => (
                             <div style={this.columnStyle} className={item.hidden ? 'columnHidden' : (item.length > 0 ? 'column' : '')} key={pos}>
                                 {item.map((e,i) =>
-                                    <Item selected={selectedElements[pos]} columnPosition={pos} data={e} key={i} index={i} renderChildren={this.renderChildren} />
+                                    <Item updateItem={this.updateItem} selected={selectedElements[pos]} columnPosition={pos} data={e} key={i} index={i} renderChildren={this.renderChildren} />
                                 )}
                             </div>
                         ))}
