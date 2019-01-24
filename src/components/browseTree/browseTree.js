@@ -46,7 +46,8 @@ class BrowseTree extends Component {
             selectedElements: this.props.selectedElements || [],
             maxColumns: null,
             showBackBtn: false,
-            currentValue: {}
+            currentValue: {},
+            path: ''
         }
         this.defaultColumns = 7
         this.layoutOrientation = { display: this.props.orientation === 'portrait' ? 'block' : 'flex' }
@@ -69,7 +70,8 @@ class BrowseTree extends Component {
             if (e.hidden) showBackBtn = true
         })
 
-        this.setState({ maxColumns, showBackBtn, childrenElements, selectedElements: selected })
+        const path = this.getPath(0, selected, this.state.elements, [], '')
+        this.setState({ path, maxColumns, showBackBtn, childrenElements, selectedElements: selected })
     }
 
     generateNodes = (selectedElements, currentElement, position) => {
@@ -122,8 +124,10 @@ class BrowseTree extends Component {
         let currentValue = {}
         if (value) {
             currentValue = value
-        } 
-        this.setState({ childrenElements, selectedElements, currentValue, showBackBtn, columnPosition })
+        }
+
+        const path = this.getPath(0, selectedElements, this.state.elements, [], '')
+        this.setState({ path, childrenElements, selectedElements, currentValue, showBackBtn, columnPosition })
         this.props.onUpdate(currentValue)
     }
 
@@ -159,7 +163,8 @@ class BrowseTree extends Component {
                 }
             }
         }
-        this.setState({ showBackBtn, selectedElements, childrenElements })
+        const path = this.getPath(0, selectedElements, this.state.elements, [], '')
+        this.setState({ path, showBackBtn, selectedElements, childrenElements })
     }
 
     updateItem = (target, columnPosition, index) => {
@@ -187,7 +192,32 @@ class BrowseTree extends Component {
             childrenElements[columnPosition][index].title = target.value
         }
         //target.readOnly = true
-        this.setState({ childrenElements, elements: elements_ })
+        const path = this.getPath(0, this.state.selectedElements, elements_, [], '')
+        this.setState({ path, childrenElements, elements: elements_ })
+    }
+
+    getPath = (pos, selected, list, result, path) => {
+        let res = result
+        if (typeof(selected[pos]) !== undefined) {
+            const index = selected[pos]
+            if (pos === 0) {
+                list[index].selected = true
+                if (list[index]) {
+                    res.push(list[index])
+                    path = list[index].title
+                    return this.getPath(1, selected, list, res, path)
+                }
+            }
+            else {
+                if (res[pos - 1] && res[pos - 1].children && res[pos - 1].children[index]) {
+                    res[pos - 1].children[index].selected = true
+                    res.push(res[pos - 1].children[index])
+                    path += ' | ' + res[pos - 1].children[index].title
+                    return this.getPath(pos + 1, selected, list, res, path)
+                }
+            } 
+        }
+        return path
     }
 
     render() {
@@ -199,6 +229,7 @@ class BrowseTree extends Component {
                     <h1>Orientation:  {this.props.orientation === 'portrait' ? 'portrait' : 'landscape'}</h1>
                     <h1>Max Columns: {this.state.maxColumns}</h1>
                     <h1>SelectedElements: {selectedElements.map(e => e)}</h1>
+                    <h1>{this.state.path}</h1>
                     <h1>
                         Current State Value:
                         {JSON.stringify(currentValue)}
@@ -223,6 +254,9 @@ class BrowseTree extends Component {
                         ))}
                     </div>
                 </section>
+                <div>
+
+                </div>
             </div>
         )
     }

@@ -1,7 +1,7 @@
-import React, { Component, Suspense, lazy } from 'react'
+import React, { Component } from 'react'
 import './App.css'
 
-//import BrowseTree from './components/browseTree'
+import BrowseTree from './components/browseTree'
 
 const elements = [
   {
@@ -151,52 +151,16 @@ const elements = [
           maxColumns={4} => OPTIONAL by default false
           dev={true} => REMOVE
 */
-const EventEmitter = {
-  events: {}, // dictionary with our events
-  on(event, listener) { // add event listeners
-    if (!this.events[event]) { this.events[event] = { listeners: [] } }
-    this.events[event].listeners.push(listener);
-  },
-  off(event) { // remove listeners
-    delete this.events[event]
-  },
-  emit(name, ...payload) { // trigger events
-
-    if (!this.events[name]) return false
-
-    for (const listener of this.events[name].listeners) {
-      listener.apply(this, payload)
-    }
-  }
-}
-
-EventEmitter.on('login', ({ user, pass }) => {
-  console.log('login', user, pass)
-});
-
-EventEmitter.on('dog', (name, color, race) => console.log('dog', name, color, race));
-
-
-const BrowseTree = lazy(() => import('./components/browseTree'))
 
 class App extends Component {
-
-  componentDidMount = () => {
-    EventEmitter.emit('login', { user: 'admin', pass: 'teste123' });
-  }
   
   onChange = (val) => {
     console.log(val)
   }
 
-  loadingMessage = () => (
-    <h1>"I'm loading..."</h1>
-  )
-
   render() {
     return (
       <div className="App">
-      <Suspense fallback={this.loadingMessage}>
         <BrowseTree
           selectedElements={[0, 0, 0, 0, 0, 0, 1, 0]}
           elements={elements}
@@ -207,7 +171,6 @@ class App extends Component {
           onUpdate={this.onChange}
           dev={true}
           />
-        </Suspense>
       </div>
     )
   }
