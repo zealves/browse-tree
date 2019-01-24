@@ -137,5 +137,7 @@ h1 .renderChildren {
     animation-name: fadeIn;
 }
 
-
+i.lastItem {
+    border-bottom: 1px solid black;
+}
 

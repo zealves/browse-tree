@@ -47,7 +47,7 @@ class BrowseTree extends Component {
             maxColumns: null,
             showBackBtn: false,
             currentValue: {},
-            path: ''
+            path: []
         }
         this.defaultColumns = 7
         this.layoutOrientation = { display: this.props.orientation === 'portrait' ? 'block' : 'flex' }
@@ -70,7 +70,7 @@ class BrowseTree extends Component {
             if (e.hidden) showBackBtn = true
         })
 
-        const path = this.getPath(0, selected, this.state.elements, [], '')
+        const path = this.getPath(0, selected, this.state.elements, [], [])
         this.setState({ path, maxColumns, showBackBtn, childrenElements, selectedElements: selected })
     }
 
@@ -126,7 +126,7 @@ class BrowseTree extends Component {
             currentValue = value
         }
 
-        const path = this.getPath(0, selectedElements, this.state.elements, [], '')
+        const path = this.getPath(0, selectedElements, this.state.elements, [], [])
         this.setState({ path, childrenElements, selectedElements, currentValue, showBackBtn, columnPosition })
         this.props.onUpdate(currentValue)
     }
@@ -163,7 +163,7 @@ class BrowseTree extends Component {
                 }
             }
         }
-        const path = this.getPath(0, selectedElements, this.state.elements, [], '')
+        const path = this.getPath(0, selectedElements, this.state.elements, [], [])
         this.setState({ path, showBackBtn, selectedElements, childrenElements })
     }
 
@@ -192,7 +192,7 @@ class BrowseTree extends Component {
             childrenElements[columnPosition][index].title = target.value
         }
         //target.readOnly = true
-        const path = this.getPath(0, this.state.selectedElements, elements_, [], '')
+        const path = this.getPath(0, this.state.selectedElements, elements_, [], [])
         this.setState({ path, childrenElements, elements: elements_ })
     }
 
@@ -204,7 +204,7 @@ class BrowseTree extends Component {
                 list[index].selected = true
                 if (list[index]) {
                     res.push(list[index])
-                    path = list[index].title
+                    path.push(list[index].title)
                     return this.getPath(1, selected, list, res, path)
                 }
             }
@@ -212,7 +212,7 @@ class BrowseTree extends Component {
                 if (res[pos - 1] && res[pos - 1].children && res[pos - 1].children[index]) {
                     res[pos - 1].children[index].selected = true
                     res.push(res[pos - 1].children[index])
-                    path += ' | ' + res[pos - 1].children[index].title
+                    path.push(res[pos - 1].children[index].title)
                     return this.getPath(pos + 1, selected, list, res, path)
                 }
             } 
@@ -221,19 +221,27 @@ class BrowseTree extends Component {
     }
 
     render() {
-        const { childrenElements, selectedElements, currentValue } = this.state
+        const { childrenElements, selectedElements, currentValue, path } = this.state
         return (
             <div className='rootBrowseTree'>
                 {this.props.dev && (
                 <div>
-                    <h1>Orientation:  {this.props.orientation === 'portrait' ? 'portrait' : 'landscape'}</h1>
-                    <h1>Max Columns: {this.state.maxColumns}</h1>
-                    <h1>SelectedElements: {selectedElements.map(e => e)}</h1>
-                    <h1>{this.state.path}</h1>
-                    <h1>
+                    <div><i>Orientation:  {this.props.orientation === 'portrait' ? 'portrait' : 'landscape'}</i></div>
+                    <br></br>
+                    <div><i>Max Columns: {this.state.maxColumns}</i></div>
+                    <br></br>
+                    <div><i>SelectedElements: {selectedElements.map(e => e)}</i></div>
+                    <br></br>
+                    <div>
+                    {path.map((e, i) => (
+                        path.length - 1 === i ? <i key={i} className='lastItem'>{e}</i> : (<i key={i}>{e}  | </i>)
+                    ))}
+                    </div>
+                    <br></br>
+                    <i>
                         Current State Value:
                         {JSON.stringify(currentValue)}
-                    </h1>
+                    </i>
                     <br></br>
                     <br></br>
                 </div>
