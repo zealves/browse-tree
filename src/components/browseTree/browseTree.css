@@ -48,6 +48,8 @@
     border: none;
     outline: none;
     background: unset;
+    width: 100%;
+    text-align: left;
 }
 
 .columnHidden {
@@ -79,6 +81,11 @@ h1 .folder {
     width: 18px;
     height: 18px;
     margin-right: 5px;
+}
+
+h1 .renderChildren {
+    min-width: 30px;
+    cursor: pointer;
 }
 
 .backBtnContent {
@@ -129,3 +136,8 @@ h1 .folder {
     -webkit-animation-name: fadeIn;
     animation-name: fadeIn;
 }
+
+i.lastItem {
+    border-bottom: 1px solid black;
+}
+

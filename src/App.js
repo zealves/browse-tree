@@ -80,7 +80,8 @@ const elements = [
                   },
                   {
                     title: 'RRRR',
-                    children: []
+                    children: [],
+                    value: { teste: 3}
                   }
                 ]
               },
@@ -152,17 +153,24 @@ const elements = [
 */
 
 class App extends Component {
+  
+  onChange = (val) => {
+    console.log(val)
+  }
+
   render() {
     return (
       <div className="App">
         <BrowseTree
-          selectedElements={[0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]}
+          selectedElements={[0, 0, 0, 0, 0, 0, 1, 0]}
           elements={elements}
           orientation={'landscape'}
           itemMinWidth={200}
           itemMaxWidth={600}
           maxColumns={4}
-          dev={true} />
+          onUpdate={this.onChange}
+          dev={true}
+          />
       </div>
     )
   }
