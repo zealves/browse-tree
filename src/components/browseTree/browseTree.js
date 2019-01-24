@@ -6,7 +6,7 @@ import folder from '../../assets/img/folder.png'
 import folderClose from '../../assets/img/folderClose.png'
 import dot from '../../assets/img/dot.png'
 
-const Item = ({ data, index, renderChildren, columnPosition, selected, updateItem }) => {
+const Item = ({ data, index, renderChildren, columnPosition, selected }) => {
     const { title, children, value } = data
     let classNames = selected === index && 'selected '
     if (children)  classNames += children.length > 0 && ' haveChildren'

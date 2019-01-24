@@ -153,7 +153,7 @@ const elements = [
 */
 
 class App extends Component {
-  
+
   onChange = (val) => {
     console.log(val)
   }
