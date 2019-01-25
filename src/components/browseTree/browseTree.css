@@ -141,3 +141,24 @@ i.lastItem {
     border-bottom: 1px solid black;
 }
 
+img.addFolderItem,
+img.addItem {
+    display: block;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+img.addFolderItem {
+    margin-left: 30px;
+}
+
+.interactionIcons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+input:read-write:focus {
+    font-family: cursive;
+}
