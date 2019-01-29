@@ -1,5 +1,6 @@
 .rootBrowseTree {
     padding: 30px;
+    user-select: none;
 }
 
 .browseTree,
