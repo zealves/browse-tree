@@ -20,6 +20,7 @@
     padding: 15px;
     flex: 1;
     overflow: hidden;
+    overflow-y: auto;
     min-width: 115px;
     max-width: 600px;
     margin: 2px;

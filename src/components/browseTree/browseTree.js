@@ -75,7 +75,8 @@ class BrowseTree extends Component {
         this.layoutOrientation = { display: this.props.orientation === 'portrait' ? 'block' : 'flex' }
         this.columnStyle = {
             minWidth: this.props.itemMinWidth || 115,
-            maxWidth: this.props.itemMaxWidth || 600
+            maxWidth: this.props.itemMaxWidth || 600,
+            maxHeight: this.props.itemMaxHeight || '100%'
         }
     }
 

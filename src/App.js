@@ -167,9 +167,10 @@ class App extends Component {
           orientation={'landscape'}
           itemMinWidth={200}
           itemMaxWidth={600}
+          itemMaxHeight={'calc(100vh - 150px)'}
           maxColumns={4}
           onUpdate={this.onChange}
-          dev={true}
+          dev={false}
           />
       </div>
     )
