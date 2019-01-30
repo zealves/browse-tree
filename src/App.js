@@ -170,8 +170,8 @@ class App extends Component {
           itemMaxHeight={400}
           maxColumns={4}
           onUpdate={this.onChange}
-          editItems={false}
-          addItems={false}
+          editItems={true}
+          addItems={true}
           dev={true}
           />
       </div>

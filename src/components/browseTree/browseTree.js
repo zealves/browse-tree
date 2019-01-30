@@ -7,6 +7,7 @@ import folderClose from '../../assets/img/folderClose.png'
 import dot from '../../assets/img/dot.png'
 import plus from '../../assets/img/plus.png'
 import plusFolder from '../../assets/img/plusFolder.png'
+import save from '../../assets/img/save.png'
 
 const Item = ({ data, index, renderChildren, columnPosition, selected, updateItem, deleteItem, editItems }) => {
     const { title, children, value } = data
@@ -44,11 +45,13 @@ const Item = ({ data, index, renderChildren, columnPosition, selected, updateIte
             <div className={'renderChildren'} onClick={() => (value ? renderChildren(index, columnPosition, value) : renderChildren(index, columnPosition))}>
                 {children.length > 0 ?
                     <img
+                        title={'Open folder'}
                         className={'arrow'}
                         alt={'>'}
                         src={arrowRight}
                 /> :
                     <img
+                        title={'Select item'}
                         className={'arrow'}
                         alt={'.'}
                         src={dot} />
@@ -359,19 +362,22 @@ class BrowseTree extends Component {
                     <br></br>
                 </div>
                 )}
-                <section className='browseTree animated fadeIn'> 
+                <div style={{textAlign: 'right'}}>
+                    <img title={'Save'} alt={'Save items'} src={save} className={'saveIcon'} />
+                </div>
+                <section className='browseTree animated fadeIn'>
                     <div className='browseSubTree' style={this.layoutOrientation}>
                         {showBackBtn && (
                             <div className={'backBtnContent'}>
-                                <img className={'backBtn'} onClick={this.back} src={arrowLeft} alt='Back' />
+                                <img title={'Go back'} className={'backBtn'} onClick={this.back} src={arrowLeft} alt='Back' />
                             </div>
                         )}
                         {childrenElements.map((item, pos) => (
                             <div style={this.columnStyle} className={item.hidden ? 'columnHidden' : (item.length > 0 ? 'column' : '')} key={pos}>
                                 {addItems && 
                                 <div className={'interactionIcons'}>
-                                    <img alt={'Add single item'} src={plus} className={'addItem'} onClick={() => this.addItem(pos, false)} />
-                                    <img alt={'Add folder item'} src={plusFolder} className={'addFolderItem'} onClick={() => this.addItem(pos, true)} />
+                                    <img title={'Add new item'} alt={'Add new item'} src={plus} className={'addItem'} onClick={() => this.addItem(pos, false)} />
+                                    <img title={'Add new folder'} alt={'Add new folder'} src={plusFolder} className={'addFolderItem'} onClick={() => this.addItem(pos, true)} />
                                 </div>}
                                 {item.map((e,i) =>
                                     <Item editItems={editItems} deleteItem={this.deleteItem} updateItem={this.updateItem} selected={selectedElements[pos]} columnPosition={pos} data={e} key={i} index={i} renderChildren={this.renderChildren} />
