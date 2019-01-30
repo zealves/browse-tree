@@ -98,8 +98,7 @@ class BrowseTree extends Component {
         let childrenElements = []
         const { path, children, selectedValues } = this.getElements(0, selectedElements, this.state.elements, [], [], [])
         const maxColumns = (parseInt(this.props.maxColumns) >= 0) ? parseInt(this.props.maxColumns) : this.defaultColumns
-        childrenElements = children
-        childrenElements = this.hideElements(1, childrenElements, maxColumns)
+        childrenElements = this.hideElements(1, children, maxColumns)
         childrenElements.forEach(e => {
             if (e.hidden) showBackBtn = true
         })
@@ -115,8 +114,7 @@ class BrowseTree extends Component {
 
         const { path, children, selectedValues } = this.getElements(0, selectedElements, this.state.elements, [], [], [])
         selectedElements = selectedValues
-        childrenElements = children
-        childrenElements = this.hideElements(1, childrenElements, maxColumns)
+        childrenElements = this.hideElements(1, children, maxColumns)
         childrenElements.forEach(e => {
             if (e.hidden) showBackBtn = true
         })
@@ -304,8 +302,7 @@ class BrowseTree extends Component {
         /* regenerate tree */
         const { path, children, selectedValues } = this.getElements(0, selectedElementsAfterDelete, elements_, [], [], [])
         const selectedElements = selectedValues
-        childrenElements = children
-        childrenElements = this.hideElements(1, childrenElements, parseInt(this.state.maxColumns))
+        childrenElements = this.hideElements(1, children, parseInt(this.state.maxColumns))
         childrenElements.forEach(e => {
             if (e.hidden) showBackBtn = true
         })
@@ -358,6 +355,7 @@ class BrowseTree extends Component {
 
     resetItems = () => {
         console.log('resetItems', this.state.originalElements)
+        this.setState({ saveItems: false })
     }
 
     render() {
@@ -392,7 +390,7 @@ class BrowseTree extends Component {
                 )}
                 <div className={'saveArea animated fadeIn'}>
                     {saveItems && <img onClick={this.saveItems} title={'Save'} alt={'Save items'} src={save} className={'saveIcon'} />}
-                    <img onClick={this.resetItems} title={'Reset'} alt={'Reset'} src={reset} className={'saveIcon'} />
+                    {saveItems && <img onClick={this.resetItems} title={'Reset'} alt={'Reset'} src={reset} className={'saveIcon'} />}
                 </div>
                 <section className='browseTree animated fadeIn'>
                     <div className='browseSubTree' style={this.layoutOrientation}>
