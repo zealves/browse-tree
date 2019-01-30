@@ -79,8 +79,12 @@
 }
 
 .delete {
-    display: block;
+    display: none;
     color: #ff0000ba;
+}
+
+.browseTree h1:hover .delete { 
+    display: block;
 }
 
 h1 .arrow {

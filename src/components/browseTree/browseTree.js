@@ -368,10 +368,10 @@ class BrowseTree extends Component {
                     ))}
                     </div>
                     <br></br>
-                    <i>
-                        Current State Value:
+                    <b>
+                        <i>Current State Value:</i>
                         {JSON.stringify(currentValue)}
-                    </i>
+                    </b>
                     <br></br>
                     <br></br>
                 </div>
