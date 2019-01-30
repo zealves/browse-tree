@@ -201,6 +201,7 @@ input:read-write:focus {
     width: auto;
     height: 100%;
     cursor: pointer;
+    margin-left: 30px;
 }
 
 ::-webkit-scrollbar {

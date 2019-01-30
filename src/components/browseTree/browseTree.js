@@ -8,6 +8,7 @@ import dot from '../../assets/img/dot.png'
 import plus from '../../assets/img/plus.png'
 import plusFolder from '../../assets/img/plusFolder.png'
 import save from '../../assets/img/save.png'
+import reset from '../../assets/img/reset.png'
 
 const Item = ({ data, index, renderChildren, columnPosition, selected, updateItem, deleteItem, editItems }) => {
     const { title, children, value } = data
@@ -67,8 +68,10 @@ const Item = ({ data, index, renderChildren, columnPosition, selected, updateIte
 class BrowseTree extends Component {
     constructor(props, context) {
         super(props, context)
+        const elements = JSON.parse(JSON.stringify(this.props.elements))
         this.state = {
-            elements: this.props.elements || [],
+            originalElements: this.props.elements || [],
+            elements: elements || [],
             childrenElements: [],
             columnPosition: 0,
             selectedElements: this.props.selectedElements || [],
@@ -353,6 +356,10 @@ class BrowseTree extends Component {
         }
     }
 
+    resetItems = () => {
+        console.log('resetItems', this.state.originalElements)
+    }
+
     render() {
         const { childrenElements, selectedElements, currentValue, path, maxColumns, showBackBtn, editItems, addItems, saveItems } = this.state
         const { orientation } = this.props
@@ -385,6 +392,7 @@ class BrowseTree extends Component {
                 )}
                 <div className={'saveArea animated fadeIn'}>
                     {saveItems && <img onClick={this.saveItems} title={'Save'} alt={'Save items'} src={save} className={'saveIcon'} />}
+                    <img onClick={this.resetItems} title={'Reset'} alt={'Reset'} src={reset} className={'saveIcon'} />
                 </div>
                 <section className='browseTree animated fadeIn'>
                     <div className='browseSubTree' style={this.layoutOrientation}>
