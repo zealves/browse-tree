@@ -394,7 +394,7 @@ class BrowseTree extends Component {
                             </div>
                         )}
                         {childrenElements.map((item, pos) => (
-                            <div style={this.columnStyle} className={item.hidden ? 'columnHidden' : (item.length > 0 ? 'column' : '')} key={pos}>
+                            <div style={this.columnStyle} className={item.hidden ? 'columnHidden' : ('column')} key={pos}>
                                 {addItems && 
                                 <div className={'interactionIcons'}>
                                     <img title={'Add new item'} alt={'Add new item'} src={plus} className={'addItem'} onClick={() => this.addItem(pos, false)} />
