@@ -6,13 +6,16 @@ import BrowseTree from './components/browseTree'
 const elements = [
   {
     title: 'Opções',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/a/ac/Approve_icon.svg',
     value: { objectName: 'TESTE', data: [1, 2, 3, 4, 5, 6, 7, 8] },
     children: [
       {
         title: 'Opções1',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/1/16/Deletion_icon.svg',
         children: [
           {
             title: 'Opções11',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Injury_icon_2.svg/1024px-Injury_icon_2.svg.png',
             children: [
               {
                 title: 'Opções111',
@@ -119,10 +122,12 @@ const elements = [
   },
   {
     title: 'Items',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Feed-icon.svg/1024px-Feed-icon.svg.png',
     children: []
   },
   {
     title: 'Projetos',
+    image: 'https://findicons.com/files/icons/1190/agua_leopard_folders/256/projects_folder.png',
     children: [],
     value: { id: 12, data: 'Projetos' }
   },

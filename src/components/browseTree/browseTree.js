@@ -11,10 +11,10 @@ import save from '../../assets/img/save.png'
 import reset from '../../assets/img/reset.png'
 
 const Item = ({ data, index, renderChildren, columnPosition, selected, updateItem, deleteItem, editItems }) => {
-    const { title, children, value } = data
+    const { title, children, value, image } = data
     let classNames = selected === index && 'selected '
     if (children)  classNames += children.length > 0 && ' haveChildren'
-
+    const src = image ? image : false
     return (
         <h1 data-pos={index}  className={classNames}>
             <div className='textContent'>
@@ -31,6 +31,7 @@ const Item = ({ data, index, renderChildren, columnPosition, selected, updateIte
                                 alt={'#'}
                                 src={folderClose} />)
                         : '' }
+                    {image && <img src={image} alt='' height='20' width='20' />}
                     <input  
                         readOnly
                         onDoubleClick={(e) => editItems && (e.target.readOnly = false)}
