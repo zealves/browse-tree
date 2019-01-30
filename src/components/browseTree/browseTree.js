@@ -16,33 +16,35 @@ const Item = ({ data, index, renderChildren, columnPosition, selected, updateIte
 
     return (
         <h1 data-pos={index}  className={classNames}>
-            <span className='textContent'>
-                {children.length > 0 ? 
-                    (selected === index ?
-                        <img
-                            className={'folder'}
-                            alt={'#'}
-                            src={folder} />
-                        :
-                        <img
-                            className={'folder'}
-                            alt={'#'}
-                            src={folderClose} />)
-                    : '' }
-                <input  
-                    readOnly
-                    onDoubleClick={(e) => editItems && (e.target.readOnly = false)}
-                    className={'editItem'}
-                    type='text'
-                    title={title}
-                    value={title}
-                    onChange={(e) => editItems && updateItem(e.target, columnPosition, index)} />
+            <div className='textContent'>
+                <div className={'title'}>
+                    {children.length > 0 ? 
+                        (selected === index ?
+                            <img
+                                className={'folder'}
+                                alt={'#'}
+                                src={folder} />
+                            :
+                            <img
+                                className={'folder'}
+                                alt={'#'}
+                                src={folderClose} />)
+                        : '' }
+                    <input  
+                        readOnly
+                        onDoubleClick={(e) => editItems && (e.target.readOnly = false)}
+                        className={'editItem'}
+                        type='text'
+                        title={title}
+                        value={title}
+                        onChange={(e) => editItems && updateItem(e.target, columnPosition, index)} />
+                </div>
                 {editItems && <span
-                    style={{ display: 'block' }}
+                    className={'delete'}
                     onClick={() => { if(window.confirm('Are you sure you want to delete this item?')) { deleteItem(columnPosition, index)}}}>
                     delete
                 </span>}
-            </span>
+            </div>
             <div className={'renderChildren'} onClick={() => (value ? renderChildren(index, columnPosition, value) : renderChildren(index, columnPosition, title))}>
                 {children.length > 0 ?
                     <img
@@ -374,9 +376,9 @@ class BrowseTree extends Component {
                     <br></br>
                 </div>
                 )}
-                {saveItems && <div className={'saveArea'}>
-                    <img onClick={this.saveItems} title={'Save'} alt={'Save items'} src={save} className={'saveIcon'} />
-                </div>}
+                <div className={'saveArea animated fadeIn'}>
+                    {saveItems && <img onClick={this.saveItems} title={'Save'} alt={'Save items'} src={save} className={'saveIcon'} />}
+                </div>
                 <section className='browseTree animated fadeIn'>
                     <div className='browseSubTree' style={this.layoutOrientation}>
                         {showBackBtn && (

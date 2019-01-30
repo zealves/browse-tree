@@ -33,6 +33,8 @@
     height: 40px;
     padding-left: 10px;
     padding-right: 5px;
+    padding-top: 6px;
+    padding-bottom: 6px;
     font-size: 14px;
     display: flex;
     align-items: center;
@@ -59,24 +61,35 @@
     display: none;
 }
 
-.browseTree h1.haveChildren:hover,
-.browseTree h1.selected.haveChildren {
-    background-color: #d8d8d8;
-    border-radius: 10px;
-    color: black;
-}
-
 .browseTree h1.selected,
-.browseTree h1:hover {
-    background-color: #4285f4;
+.browseTree h1.selected:hover {
+    background-color: #040404a1;
     border-radius: 10px;
     color: white;
+}
+
+.browseTree h1:hover {
+    background-color: #dedede;
+    border-radius: 10px;
+    color: white;
+}
+
+.browseTree h1.selected input {
+    color: white;
+}
+
+.delete {
+    display: block;
+    color: #ff0000ba;
 }
 
 h1 .arrow {
     width: 18px;
     height: 18px;
     cursor: pointer;
+    background: white;
+    border-radius: 50%;
+    padding: 5px;
 }
 
 h1 .folder {
@@ -111,6 +124,11 @@ h1 .renderChildren {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.textContent .title {
+    display: flex;
+    align-items: center;
 }
 
 .animated {
@@ -169,11 +187,15 @@ input:read-write:focus {
     text-align: right;
     background-color: #f3f3f3;
     padding: 25px 6px 0px 0px;
+    text-align: right;
+    background-color: #f3f3f3;
+    padding: 25px 6px 0px 0px;
+    height: 35px;
 }
 
 .saveIcon {
-    width: 40px;
-    height: 40px;
+    width: auto;
+    height: 100%;
     cursor: pointer;
 }
 
