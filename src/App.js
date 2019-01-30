@@ -6,7 +6,7 @@ import BrowseTree from './components/browseTree'
 const elements = [
   {
     title: 'Opções',
-    value: { id: 122, data: 'Opções' },
+    value: { objectName: 'TESTE', data: [1, 2, 3, 4, 5, 6, 7, 8] },
     children: [
       {
         title: 'Opções1',

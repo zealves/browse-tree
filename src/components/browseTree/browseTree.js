@@ -121,9 +121,16 @@ class BrowseTree extends Component {
         let currentValue = {}
         if (value) {
             currentValue = value
+            //function call
+            /*
+            if (typeof value === 'function' && {}.toString.call(value) === '[object Function]')
+                value()
+            */
         }
+
         this.setState({ path, childrenElements, selectedElements, currentValue, showBackBtn, columnPosition })
-        this.props.onUpdate(currentValue)
+        if (this.props.onUpdate)
+            this.props.onUpdate(currentValue)
     }
 
     hideElements = (columnPosition, childrenElements, maxColumns) => {
