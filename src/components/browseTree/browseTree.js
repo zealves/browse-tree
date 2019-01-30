@@ -34,6 +34,7 @@ const Item = ({ data, index, renderChildren, columnPosition, selected, updateIte
                     onDoubleClick={(e) => editItems && (e.target.readOnly = false)}
                     className={'editItem'}
                     type='text'
+                    title={title}
                     value={title}
                     onChange={(e) => editItems && updateItem(e.target, columnPosition, index)} />
                 {editItems && <span
@@ -42,7 +43,7 @@ const Item = ({ data, index, renderChildren, columnPosition, selected, updateIte
                     delete
                 </span>}
             </span>
-            <div className={'renderChildren'} onClick={() => (value ? renderChildren(index, columnPosition, value) : renderChildren(index, columnPosition))}>
+            <div className={'renderChildren'} onClick={() => (value ? renderChildren(index, columnPosition, value) : renderChildren(index, columnPosition, title))}>
                 {children.length > 0 ?
                     <img
                         title={'Open folder'}
@@ -332,9 +333,16 @@ class BrowseTree extends Component {
         return { path, children: res, selectedValues }
     }
 
+    saveItems = () => {
+        const updatedElements = this.state.elements
+        if (this.props.saveItems) {
+            this.props.saveItems(updatedElements)
+        }
+    }
+
     render() {
         const { childrenElements, selectedElements, currentValue, path, maxColumns, showBackBtn, editItems, addItems } = this.state
-        const { orientation } = this.props
+        const { orientation, saveItems } = this.props
         return (
             <div className='rootBrowseTree'>
                 {this.props.dev && (
@@ -362,9 +370,9 @@ class BrowseTree extends Component {
                     <br></br>
                 </div>
                 )}
-                <div style={{textAlign: 'right'}}>
-                    <img title={'Save'} alt={'Save items'} src={save} className={'saveIcon'} />
-                </div>
+                {saveItems && <div style={{textAlign: 'right'}}>
+                    <img onClick={this.saveItems} title={'Save'} alt={'Save items'} src={save} className={'saveIcon'} />
+                </div>}
                 <section className='browseTree animated fadeIn'>
                     <div className='browseSubTree' style={this.layoutOrientation}>
                         {showBackBtn && (

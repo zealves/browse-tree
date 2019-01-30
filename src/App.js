@@ -141,21 +141,14 @@ const elements = [
   }
 ]
 
-/*
-  PROPS:
-  selectedElements={[0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]}  =>  OPTIONAL  path of selected elements by position
-  elements={elements}  => REQUIRED  all data in specific format
-  orientation={'landscape'} => OPTIONAL 'landscape' or 'portrait', by default landscape
-          itemMinWidth={200} => OPTIONAL by default 115
-          itemMaxWidth={600} => OPTIONAL by default 600
-          maxColumns={4} => OPTIONAL by default false
-          dev={true} => REMOVE
-*/
-
 class App extends Component {
   
   onChange = (val) => {
-    console.log(val)
+    console.log('currentValue', val)
+  }
+
+  saveItems = (items) => {
+    console.log('saveItems', items)
   }
 
   render() {
@@ -172,6 +165,7 @@ class App extends Component {
           onUpdate={this.onChange}
           editItems={true}
           addItems={true}
+          saveItems={this.saveItems}
           dev={true}
           />
       </div>
