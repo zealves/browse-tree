@@ -165,6 +165,12 @@ input:read-write:focus {
     font-family: cursive;
 }
 
+.saveArea {
+    text-align: right;
+    background-color: #f3f3f3;
+    padding: 25px 6px 0px 0px;
+}
+
 .saveIcon {
     width: 40px;
     height: 40px;

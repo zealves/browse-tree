@@ -75,7 +75,8 @@ class BrowseTree extends Component {
             currentValue: {},
             path: [],
             editItems: this.props.editItems || false,
-            addItems: this.props.addItems || false
+            addItems: this.props.addItems || false,
+            saveItems: false
         }
         this.defaultColumns = 7
         this.layoutOrientation = { display: this.props.orientation === 'portrait' ? 'block' : 'flex' }
@@ -186,7 +187,8 @@ class BrowseTree extends Component {
         }
 
         const { path } = this.getElements(0, selectedElements, elements_, [], [], [])
-        this.setState({ path, childrenElements, elements: elements_ })
+        const saveItems = this.props.saveItems || false
+        this.setState({ saveItems, path, childrenElements, elements: elements_ })
     }
 
     addItem = (columnPosition, folder) => {
@@ -244,7 +246,8 @@ class BrowseTree extends Component {
         })
 
         const { path } = this.getElements(0, selectedElements, elements_, [], [], [])
-        this.setState({ path, childrenElements, elements: elements_ })
+        const saveItems = this.props.saveItems || false
+        this.setState({ saveItems, path, childrenElements, elements: elements_ })
     }
 
     deleteItem = (columnPosition, index) => {
@@ -295,7 +298,8 @@ class BrowseTree extends Component {
             if (e.hidden) showBackBtn = true
         })
         /*  /regenerate tree */
-        this.setState({ showBackBtn, path, childrenElements, elements: elements_, selectedElements })
+        const saveItems = this.props.saveItems || false
+        this.setState({ saveItems, showBackBtn, path, childrenElements, elements: elements_, selectedElements })
     }
 
     getElements = (pos, selected, list, result, path, selectedElements) => {
@@ -335,13 +339,14 @@ class BrowseTree extends Component {
     saveItems = () => {
         const updatedElements = this.state.elements
         if (this.props.saveItems) {
+            this.setState({ saveItems: false })
             this.props.saveItems(updatedElements)
         }
     }
 
     render() {
-        const { childrenElements, selectedElements, currentValue, path, maxColumns, showBackBtn, editItems, addItems } = this.state
-        const { orientation, saveItems } = this.props
+        const { childrenElements, selectedElements, currentValue, path, maxColumns, showBackBtn, editItems, addItems, saveItems } = this.state
+        const { orientation } = this.props
         return (
             <div className='rootBrowseTree'>
                 {this.props.dev && (
@@ -369,7 +374,7 @@ class BrowseTree extends Component {
                     <br></br>
                 </div>
                 )}
-                {saveItems && <div style={{textAlign: 'right'}}>
+                {saveItems && <div className={'saveArea'}>
                     <img onClick={this.saveItems} title={'Save'} alt={'Save items'} src={save} className={'saveIcon'} />
                 </div>}
                 <section className='browseTree animated fadeIn'>
