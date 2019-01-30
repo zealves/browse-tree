@@ -289,7 +289,6 @@ class BrowseTree extends Component {
         /* regenerate tree */
         const { path, children, selectedValues } = this.getElements(0, selectedElementsAfterDelete, elements_, [], [], [])
         const selectedElements = selectedValues
-        console.log(children, selectedElements, path)
         childrenElements = children
         childrenElements = this.hideElements(1, childrenElements, parseInt(this.state.maxColumns))
         childrenElements.forEach(e => {
