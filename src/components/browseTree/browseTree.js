@@ -354,8 +354,19 @@ class BrowseTree extends Component {
     }
 
     resetItems = () => {
-        console.log('resetItems', this.state.originalElements)
-        this.setState({ saveItems: false })
+        /*
+        let selectedElements = this.state.selectedElements
+        let showBackBtn = false
+        let childrenElements = []
+        const { path, children, selectedValues } = this.getElements(0, selectedElements, this.state.originalElements, [], [], [])
+        const maxColumns = (parseInt(this.props.maxColumns) >= 0) ? parseInt(this.props.maxColumns) : this.defaultColumns
+        childrenElements = this.hideElements(1, children, maxColumns)
+        childrenElements.forEach(e => {
+            if (e.hidden) showBackBtn = true
+        })
+        this.setState({ saveItems: false, path, maxColumns, showBackBtn, childrenElements, selectedElements: selectedValues })
+        this.props.saveItems(childrenElements)
+        */
     }
 
     render() {
