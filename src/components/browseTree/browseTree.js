@@ -321,7 +321,9 @@ class BrowseTree extends Component {
                     list[index].selected = true
                     res.push(list)
                     res.push(list[index].children)
-                    path.push(list[index].title)
+                    const val = list[index].value ? list[index].value : list[index].title
+                    const breadcrumb = <span onClick={() => this.renderChildren(index, pos, val)}>{list[index].title}</span>
+                    path.push(breadcrumb)
                     selectedElements.push(index)
                     return this.getElements(1, selected, list, res, path, selectedElements)
                 }
@@ -337,7 +339,10 @@ class BrowseTree extends Component {
                 if (res[pos] && res[pos][index] && res[pos][index] && res[pos][index].children.length > 0) {
                     res[pos][index].selected = true
                     res.push(res[pos][index].children)
-                    path.push(res[pos][index].title)
+
+                    const val = res[pos][index].value ? res[pos][index].value : res[pos][index].title
+                    const breadcrumb = <span onClick={() => this.renderChildren(index, pos, val)}>{res[pos][index].title}</span>
+                    path.push(breadcrumb)
                     return this.getElements(pos + 1, selected, list, res, path, selectedElements)
                 }
             }
@@ -374,11 +379,6 @@ class BrowseTree extends Component {
                     <br></br>
                     <div><i>SelectedElements: {selectedElements.map(e => e)}</i></div>
                     <br></br>
-                    <div>
-                    {path.map((e, i) => (
-                        path.length - 1 === i ? <i key={i} className='lastItem'>{e}</i> : (<i key={i}>{e}  | </i>)
-                    ))}
-                    </div>
                     <br></br>
                     <b>
                         <i>Current State Value:</i>
@@ -389,8 +389,15 @@ class BrowseTree extends Component {
                 </div>
                 )}
                 <div className={'saveArea animated fadeIn'}>
-                    {saveItems && <img onClick={this.saveItems} title={'Save'} alt={'Save items'} src={save} className={'saveIcon'} />}
-                    {saveItems && <img onClick={this.resetItems} title={'Reset'} alt={'Reset'} src={reset} className={'saveIcon'} />}
+                    <div>
+                        {path.map((e, i) => (
+                            path.length - 1 === i ? <i key={i} className='lastItem'>{e}</i> : (<i key={i}>{e}  | </i>)
+                        ))}
+                    </div>
+                    <div className={'rightIcons'}>
+                        {saveItems && <img onClick={this.saveItems} title={'Save'} alt={'Save items'} src={save} className={'saveIcon'} />}
+                        {saveItems && <img onClick={this.resetItems} title={'Reset'} alt={'Reset'} src={reset} className={'saveIcon'} />}
+                    </div>
                 </div>
                 <section className='browseTree animated fadeIn'>
                     <div className='browseSubTree' style={this.layoutOrientation}>

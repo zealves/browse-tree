@@ -188,18 +188,19 @@ input:read-write:focus {
 }
 
 .saveArea {
-    text-align: right;
-    background-color: #f3f3f3;
-    padding: 25px 6px 0px 0px;
-    text-align: right;
-    background-color: #f3f3f3;
-    padding: 25px 6px 0px 0px;
-    height: 35px;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 32px;
+    padding-top: 20px;
+}
+
+.rightIcons {
+    min-width: 180px;
 }
 
 .saveIcon {
-    width: auto;
-    height: 100%;
+    width: 35px;
+    height: 35px;
     cursor: pointer;
     margin-left: 30px;
 }
