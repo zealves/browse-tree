@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import './App.css'
 
-import BrowseTree from './components/browseTree'
+//import BrowseTree from './components/browseTree'
+import FullPage from './components/fullpage'
 
 const elements = [
   {
@@ -154,6 +155,36 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <FullPage>
+          <div orientation={'vertical'} className={'fullpage'} style={{ backgroundColor: 'seagreen' }}>
+            <h1>1</h1>
+          </div>
+          <div orientation={'horizontal'} className={'fullpage'} style={{ backgroundColor: 'red' }}>
+            <h1>2</h1>
+          </div>
+          <div orientation={'horizontal'} className={'fullpage'} style={{ backgroundColor: 'yellow' }}>
+            <h1>3</h1>
+          </div>
+          <div orientation={'vertical'} className={'fullpage'} style={{ backgroundColor: 'brown' }}>
+            <h1>4</h1>
+          </div>
+          <div orientation={'vertical'} className={'fullpage'} style={{ backgroundColor: 'green' }}>
+            <h1>5</h1>
+          </div>
+          <div orientation={'horizontal'} className={'fullpage'} style={{ backgroundColor: 'pink' }}>
+            <h1>6</h1>
+          </div>
+          <div orientation={'horizontal'} className={'fullpage'} style={{ backgroundColor: 'orange' }}>
+            <h1>7</h1>
+          </div>
+          <div orientation={'horizontal'} className={'fullpage'} style={{ backgroundColor: 'beige' }}>
+            <h1>8</h1>
+          </div>
+          <div orientation={'vertical'} className={'fullpage'} style={{ backgroundColor: 'coral' }}>
+            <h1>9</h1>
+          </div>
+        </FullPage>
+        {/*
         <BrowseTree
           selectedElements={[0, 0, 0, 0, 0, 0, 1, 0]}
           elements={elements}
@@ -168,6 +199,7 @@ class App extends Component {
           saveItems={this.saveItems}
           dev={true}
           />
+        */}
       </div>
     )
   }
