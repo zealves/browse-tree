@@ -142,16 +142,39 @@ const elements = [
 ]
 
 class App extends Component {
-  
+  constructor(props) {
+    super(props)
+    this.state = {
+      elements: elements,
+      flag: false
+    }
+  }
+
+  componentDidMount = () => {
+    try {
+      if (localStorage.getItem('elements') && localStorage.getItem('elements') !== '') {
+        const d = JSON.parse(localStorage.getItem('elements'))
+        return this.setState({ elements: d, flag: true })
+      }
+    } catch (err) {
+      console.log('get elements Error' + err)
+    }
+    return this.setState({ flag: true })
+  }
+
   onChange = (val) => {
     console.log('currentValue', val)
   }
 
   saveItems = (items) => {
     console.log('saveItems', items)
+    localStorage.setItem('elements', JSON.stringify(items))
+    this.setState({ elements: items, flag: true })
   }
 
   render() {
+    let { elements } = this.state
+    if (!this.state.flag) return ''
     return (
       <div className="App">
         <BrowseTree
