@@ -11,10 +11,10 @@ import save from '../../assets/img/save.png'
 import reset from '../../assets/img/reset.png'
 
 const Item = ({ data, index, renderChildren, columnPosition, selected, updateItem, deleteItem, editItems }) => {
-    const { title, children, value } = data
+    const { title, children, value, image } = data
     let classNames = selected === index && 'selected '
     if (children)  classNames += children.length > 0 && ' haveChildren'
-
+    const src = image ? image : false
     return (
         <h1 data-pos={index}  className={classNames}>
             <div className='textContent'>
@@ -31,6 +31,7 @@ const Item = ({ data, index, renderChildren, columnPosition, selected, updateIte
                                 alt={'#'}
                                 src={folderClose} />)
                         : '' }
+                    {image && <img src={image} alt='' height='20' width='20' />}
                     <input  
                         readOnly
                         onDoubleClick={(e) => editItems && (e.target.readOnly = false)}
@@ -359,8 +360,19 @@ class BrowseTree extends Component {
     }
 
     resetItems = () => {
-        console.log('resetItems', this.state.originalElements)
-        this.setState({ saveItems: false })
+        /*
+        let selectedElements = this.state.selectedElements
+        let showBackBtn = false
+        let childrenElements = []
+        const { path, children, selectedValues } = this.getElements(0, selectedElements, this.state.originalElements, [], [], [])
+        const maxColumns = (parseInt(this.props.maxColumns) >= 0) ? parseInt(this.props.maxColumns) : this.defaultColumns
+        childrenElements = this.hideElements(1, children, maxColumns)
+        childrenElements.forEach(e => {
+            if (e.hidden) showBackBtn = true
+        })
+        this.setState({ saveItems: false, path, maxColumns, showBackBtn, childrenElements, selectedElements: selectedValues })
+        this.props.saveItems(childrenElements)
+        */
     }
 
     render() {
